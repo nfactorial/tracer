@@ -1,0 +1,10 @@
+
+#add_subdirectory(core)
+#add_subdirectory(lights)
+add_subdirectory(materials)
+add_subdirectory(math)
+#add_subdirectory(primitives)
+#add_subdirectory(render)
+add_subdirectory(sampling)
+add_subdirectory(scene)
+#add_subdirectory(target)
