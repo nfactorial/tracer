@@ -57,8 +57,6 @@ namespace tracer {
 
         size_t getNodeCount() const;
 
-        bool validateName(const std::string &name) const;
-
     private:
         NodeMap m_nodeMap;
         NodeMap m_lightMap;

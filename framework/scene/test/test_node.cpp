@@ -14,7 +14,6 @@
 // limitations under the License.
 //
 
-#include "scene.h"
 #include "node.h"
 #include "gtest/gtest.h"
 
@@ -24,4 +23,12 @@ TEST( Node, Construction ) {
     EXPECT_TRUE(node.castShadows());
     EXPECT_TRUE(node.receiveShadows());
     EXPECT_EQ(tracer::kNodeType_Invalid, node.getNodeType());
+}
+
+TEST( Node, NameValidation ) {
+    std::string emptyName;
+    std::string validName("valid_name");
+
+    EXPECT_FALSE(tracer::Node::validateName(emptyName));
+    EXPECT_TRUE(tracer::Node::validateName(validName));
 }

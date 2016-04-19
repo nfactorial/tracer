@@ -55,4 +55,17 @@ namespace tracer {
     bool Node::intersect(HitResult &result, const Ray &ray, const Interval &interval) {
         return false;
     }
+
+
+    //! \brief  Determines whether or not a specified name is suitable for use with a node.
+    //! \param  name [in] -
+    //!         The name to be validated.
+    //! \return <em>True</em> if the name is considered valid, otherwise <em>false</em>.
+    bool Node::validateName(const std::string &name) {
+        if (name.length() == 0) {
+            return false;
+        }
+
+        return true;
+    }
 }

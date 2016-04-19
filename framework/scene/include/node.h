@@ -49,6 +49,8 @@ namespace tracer {
 
         bool intersect(HitResult &result, const Ray &ray, const Interval &interval);
 
+        static bool validateName(const std::string &name);
+
     private:
         void refreshBounds();
 

@@ -47,7 +47,8 @@ namespace tracer {
     bool Scene::createNode(kNodeType type, const std::string &name){
         Node *node = nullptr;
 
-        if (validateName(name)) {
+        if (Node::validateName(name)) {
+            // TODO: Lock mutex here if we want to be thread safe
             if (!findNode(name)) {
                 node = new Node(); // TODO: Initialize with correct data
 
@@ -283,17 +284,5 @@ namespace tracer {
 
         return result;
     */
-    }
-
-    //! \brief  Determines whether or not a specified name is suitable for use within the scene.
-    //! \param  name [in] -
-    //!         The name to be validated.
-    //! \return <em>True</em> if the name is considered valid, otherwise <em>false</em>.
-    bool Scene::validateName(const std::string &name) const {
-        if (name.length() == 0) {
-            return false;
-        }
-
-        return true;
     }
 }

@@ -26,18 +26,20 @@ TEST( Scene, Construction ) {
     EXPECT_EQ(nullptr, scene.findNode("example"));
 }
 
-TEST( Scene, NameValidation ) {
-    // TODO: Ensure scene.validateName returns true and false appropriately.
-}
 
 TEST( Scene, NodeManagement ) {
     tracer::Scene scene;
 
     std::string emptyName;
     std::string testName( "example_node" );
+    std::string unusedName( "unused_name" );
 
     EXPECT_FALSE(scene.createNode(tracer::kNodeType_Geometry, emptyName));
     EXPECT_FALSE(scene.createNode(tracer::kNodeType_Light, emptyName));
+
+    EXPECT_EQ(nullptr, scene.findNode(emptyName));
+    EXPECT_EQ(nullptr, scene.findNode(testName));
+    EXPECT_EQ(nullptr, scene.findNode(unusedName));
 
     EXPECT_FALSE(scene.deleteNode(emptyName));
     EXPECT_FALSE(scene.deleteNode(testName));
@@ -46,18 +48,22 @@ TEST( Scene, NodeManagement ) {
     EXPECT_FALSE(scene.createNode(tracer::kNodeType_Geometry, testName));
     EXPECT_FALSE(scene.createNode(tracer::kNodeType_Light, testName));
 
+    EXPECT_EQ(nullptr, scene.findNode(emptyName));
     EXPECT_NE(nullptr, scene.findNode(testName));
+    EXPECT_EQ(nullptr, scene.findNode(unusedName));
 
     EXPECT_TRUE(scene.deleteNode(testName));
     EXPECT_FALSE(scene.deleteNode(testName));
 
     EXPECT_EQ(nullptr, scene.findNode(testName));
+    EXPECT_EQ(nullptr, scene.findNode(unusedName));
 
     EXPECT_TRUE(scene.createNode(tracer::kNodeType_Light, testName));
     EXPECT_FALSE(scene.createNode(tracer::kNodeType_Light, testName));
     EXPECT_FALSE(scene.createNode(tracer::kNodeType_Geometry, testName));
 
     EXPECT_NE(nullptr, scene.findNode(testName));
+    EXPECT_EQ(nullptr, scene.findNode(unusedName));
 
     EXPECT_TRUE(scene.deleteNode(testName));
 }
