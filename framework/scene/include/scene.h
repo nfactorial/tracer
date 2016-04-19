@@ -20,7 +20,9 @@
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include <vector>
+#include <string>
+#include <unordered_map>
+
 #include <vectormath_aos.h>
 #include "node_type.h"
 
@@ -36,20 +38,16 @@ namespace tracer {
 
     //! \brief
     class Scene {
-        typedef std::vector< Node* >        NodeCollection;
-        typedef NodeCollection::iterator    NodeIterator;
-
-        typedef std::vector< Node* >        LightCollection;
-        typedef LightCollection::iterator   LightIterator;
+        typedef std::unordered_map< std::string, Node* >    NodeMap;
 
     public:
         Scene();
         ~Scene();
 
-        bool createNode( kNodeType type, const char *name );
+        bool createNode( kNodeType type, const std::string &name );
 
-        Node* findNode( const char *name );
-        bool deleteNode( const char *name );
+        Node* findNode( const std::string &name );
+        bool deleteNode( const std::string &name );
 
         float traceRay( Vectormath::Aos::Vector3 &result, const Ray &ray, const Interval &interval );
         float traceRay( Vectormath::Aos::Vector3 &result, const Ray &ray, const Interval &interval, int depth );
@@ -59,16 +57,18 @@ namespace tracer {
 
         size_t getNodeCount() const;
 
+        bool validateName(const std::string &name) const;
+
     private:
-        NodeCollection  m_nodes;
-        LightCollection  m_lights;
+        NodeMap m_nodeMap;
+        NodeMap m_lightMap;
     };
 
 
     //! \brief  Retrieves the number of nodes that currently exist with the scene object.
     //! \return The number of nodes currently contained within the scene.
     inline size_t Scene::getNodeCount() const {
-        return m_nodes.size();
+        return m_nodeMap.size();
     }
 }
 

@@ -26,15 +26,20 @@ TEST( Scene, Construction ) {
     EXPECT_EQ(nullptr, scene.findNode("example"));
 }
 
+TEST( Scene, NameValidation ) {
+    // TODO: Ensure scene.validateName returns true and false appropriately.
+}
+
 TEST( Scene, NodeManagement ) {
     tracer::Scene scene;
 
-    const char *testName = "example_node";
+    std::string emptyName;
+    std::string testName( "example_node" );
 
-    EXPECT_FALSE(scene.createNode(tracer::kNodeType_Geometry, nullptr));
-    EXPECT_FALSE(scene.createNode(tracer::kNodeType_Light, nullptr));
+    EXPECT_FALSE(scene.createNode(tracer::kNodeType_Geometry, emptyName));
+    EXPECT_FALSE(scene.createNode(tracer::kNodeType_Light, emptyName));
 
-    EXPECT_FALSE(scene.deleteNode(nullptr));
+    EXPECT_FALSE(scene.deleteNode(emptyName));
     EXPECT_FALSE(scene.deleteNode(testName));
 
     EXPECT_TRUE(scene.createNode(tracer::kNodeType_Geometry, testName));

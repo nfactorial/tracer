@@ -13,6 +13,7 @@ set(SOURCE_FILES
 set(INCLUDE_FILES
         include/hit_result.h
         include/node.h
+        include/node_type.h
         include/scene.h)
 
 add_library(tracer_scene ${SOURCE_FILES} ${HEADER_FILES})

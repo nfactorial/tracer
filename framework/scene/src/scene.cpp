@@ -28,12 +28,12 @@ namespace tracer {
     }
 
     Scene::~Scene() {
-        for (NodeIterator iterator = m_nodes.begin(); iterator != m_nodes.end(); ++iterator) {
-            delete (*iterator);
+        for (auto it = m_nodeMap.begin(); it != m_nodeMap.end(); ++it ) {
+            delete it->second;
         }
 
-        for (LightIterator iterator = m_lights.begin(); iterator != m_lights.end(); ++iterator) {
-            delete (*iterator);
+        for (auto it = m_lightMap.begin(); it != m_lightMap.end(); ++it ) {
+            delete it->second;
         }
     }
 
@@ -44,20 +44,20 @@ namespace tracer {
     //!
     //! Note: This may be changed to 'createNode' or similar factory function so that we
     //! don't rely on external code to create the node while we delete it.
-    bool Scene::createNode(kNodeType type, const char *name){
+    bool Scene::createNode(kNodeType type, const std::string &name){
         Node *node = nullptr;
 
-        if (name) {
+        if (validateName(name)) {
             if (!findNode(name)) {
                 node = new Node(); // TODO: Initialize with correct data
 
                 switch (type) {
                     case kNodeType_Geometry:
-                        m_nodes.push_back(node);
+                        m_nodeMap[name] = node;
                         break;
 
                     case kNodeType_Light:
-                        m_lights.push_back(node);
+                        m_lightMap[name] = node;
                         break;
 
                     default:
@@ -74,8 +74,18 @@ namespace tracer {
     //! \param  name [in] -
     //!         Name of the node to be retrieved.
     //! \return Pointer to the Node with the specified name, if one could not be found this method returns <em>nullptr</em>.
-    Node* Scene::findNode( const char *name ) {
+    Node* Scene::findNode(const std::string &name) {
         // TODO: Use a map to look-up the node.
+
+        auto node = m_nodeMap.find(name);
+        if (node != m_nodeMap.end()) {
+            return node->second;
+        }
+
+        auto light = m_lightMap.find(name);
+        if (light != m_lightMap.end()) {
+            return light->second;
+        }
 
         return nullptr;
     }
@@ -85,7 +95,21 @@ namespace tracer {
     //! \param  name [in] -
     //!         Name of the node to be deleted.
     //! \return <em>True</em> if the node was deleted successfully otherwise <em>false</em>.
-    bool Scene::deleteNode( const char *name ) {
+    bool Scene::deleteNode( const std::string &name ) {
+        auto node = m_nodeMap.find(name);
+        if (node != m_nodeMap.end()) {
+            delete node->second;
+            m_nodeMap.erase(node);
+            return true;
+        }
+
+        auto light = m_lightMap.find(name);
+        if (light != m_lightMap.end()) {
+            delete light->second;
+            m_lightMap.erase(light);
+            return true;
+        }
+
         return false;
     }
 
@@ -181,10 +205,10 @@ namespace tracer {
 
         result.distance = std::numeric_limits<float>::infinity();
 
-        for (NodeIterator iterator = m_nodes.begin(); iterator != m_nodes.end(); ++iterator) {
+        for (auto it = m_nodeMap.begin(); it != m_nodeMap.end(); ++it ) {
             HitResult localResult;
 
-            if ((*iterator)->intersect(localResult, ray, interval)) {
+            if (it->second->intersect(localResult, ray, interval)) {
                 // Only consider the intersection if it exists within our interval and is closer than the last intersection
                 if (interval.contains(localResult.distance) && localResult.distance < result.distance) {
                     // TODO: Change end point of interval to closest intersection, saves additional comparison
@@ -240,7 +264,7 @@ namespace tracer {
     /*  if ( depth < 3 )
         {
             Vector3 reflected;
-            traceRay( reflected, Ray( position, Mantra::reflect( incident.getDirection(), normal ) ), Interval::Front, depth + 1 );
+            traceRay( reflected, Ray( position, reflect( incident.getDirection(), normal ) ), Interval::Front, depth + 1 );
             color = color + reflected * Kr;
             //color = reflected * Kr;
         }
@@ -253,12 +277,23 @@ namespace tracer {
         shadeInfo.location  = position;
         shadeInfo.normal    = normal;
 
-        for ( LightIterator iterator = m_lights.begin(); iterator != m_lights.end(); ++iterator )
-        {
-            result += ( *iterator )->illuminate( shadeInfo );
+        for ( auto it = m_lightMap.begin(); it != m_lightMap.end(); ++it) {
+            result += it->second->illuminate( shadeInfo );
         }
 
         return result;
     */
+    }
+
+    //! \brief  Determines whether or not a specified name is suitable for use within the scene.
+    //! \param  name [in] -
+    //!         The name to be validated.
+    //! \return <em>True</em> if the name is considered valid, otherwise <em>false</em>.
+    bool Scene::validateName(const std::string &name) const {
+        if (name.length() == 0) {
+            return false;
+        }
+
+        return true;
     }
 }
