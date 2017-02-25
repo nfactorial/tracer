@@ -23,7 +23,7 @@
 namespace tracer {
     const Interval  Interval::Infinite(-std::numeric_limits<float>::infinity(),
                                             std::numeric_limits<float>::infinity());
-    const Interval  Interval::Front(0.001f, std::numeric_limits<float>::infinity());
+    const Interval  Interval::Front(0.0f, std::numeric_limits<float>::infinity());
     const Interval  Interval::Back(-std::numeric_limits<float>::infinity(), 0.0f);
     const Interval  Interval::Empty(std::numeric_limits<float>::infinity(),
                                          -std::numeric_limits<float>::infinity());

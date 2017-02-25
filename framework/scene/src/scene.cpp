@@ -14,6 +14,8 @@
 // limitations under the License.
 //
 
+#include <limits>
+
 #include "scene.h"
 #include "node.h"
 #include "hit_result.h"
@@ -174,7 +176,7 @@ namespace tracer {
             if (depth < 3 && surface.Kr > 0.001f) {
                 traceRay(reflected,
                          Ray(intersection.location, tracer::reflect(ray.getDirection(), intersection.normal)),
-                         Interval::Front, depth + 1);
+                         tracer::Interval::Front, depth + 1);
             }
 
             Vectormath::Aos::Vector3 lighting(ambient * surface.Ka + diffuse * surface.Kd + reflected * surface.Kr);
@@ -251,7 +253,7 @@ namespace tracer {
         HitResult result;
 
         Ray shadowRay(position, -lightDir);
-        if (!hitTest(result, shadowRay, Interval::Front)) {
+        if (!hitTest(result, shadowRay, tracer::Interval::Front)) {
             float d = tracer::clamp(Vectormath::Aos::dot(normal, -lightDir), 0.0f, 1.0f);
             illum += d;
         }
@@ -265,7 +267,7 @@ namespace tracer {
     /*  if ( depth < 3 )
         {
             Vector3 reflected;
-            traceRay( reflected, Ray( position, reflect( incident.getDirection(), normal ) ), Interval::Front, depth + 1 );
+            traceRay( reflected, Ray( position, reflect( incident.getDirection(), normal ) ), tracer::Interval::Front, depth + 1 );
             color = color + reflected * Kr;
             //color = reflected * Kr;
         }

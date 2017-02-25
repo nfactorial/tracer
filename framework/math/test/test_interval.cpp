@@ -44,7 +44,7 @@ TEST(Interval, TestFront) {
 TEST(Interval, TestBack) {
     tracer::Interval back = tracer::Interval::Back;
 
-    EXPECT_FALSE(back.contains(0.0f));
+    EXPECT_TRUE(back.contains(0.0f));
     EXPECT_FALSE(back.contains(0.0001f));
     EXPECT_FALSE(back.contains(100.0f));
 
@@ -54,7 +54,7 @@ TEST(Interval, TestBack) {
 }
 
 TEST(Interval, TestInfinite) {
-    tracer::Interval infinite = tracer::Interval::Back;
+    tracer::Interval infinite = tracer::Interval::Infinite;
 
     EXPECT_TRUE(infinite.contains(0.0f));
     EXPECT_TRUE(infinite.contains(0.0001f));
