@@ -41,8 +41,7 @@ namespace tracer {
     //! \param  maximum [in] -
     //!         The maximum value of the range.
     //! \return If the supplied value is between the specified range the value is returned.
-    inline float clamp( float value, float minimum, float maximum )
-    {
+    inline float clamp(float value, float minimum, float maximum) {
         return value < minimum ? minimum : value > maximum ? maximum : value;
     }
 
@@ -50,24 +49,20 @@ namespace tracer {
     //! \param  value [in] -
     //!         The value to be clamped.
     //! \return 0 if value was below 0, 1 if value was above 1 otherwise value is returned.
-    inline float saturate( float value )
-    {
-        return clamp( value, 0.0f, 1.0f );
+    inline float saturate(float value) {
+        return clamp(value, 0.0f, 1.0f);
     }
 
-    inline float Bias( float value, float t )
-    {
-        return ( 1.0f - t ) + t*value;
+    inline float bias(float value, float t) {
+        return (1.0f - t) + t*value;
     }
 
-    inline float lerp( float start, float end, float t )
-    {
-        return start + t*( end - start );
+    inline float lerp(float start, float end, float t) {
+        return start + t*(end - start);
     }
 
-    inline const Vector3 reflect( const Vector3 incident, const Vector3 normal )
-    {
-        return incident - normal * 2.0f * Vectormath::Aos::dot( incident, normal );
+    inline const Vector3 reflect(const Vector3 incident, const Vector3 normal) {
+        return incident - normal * 2.0f * Vectormath::Aos::dot(incident, normal);
     }
 }
 
