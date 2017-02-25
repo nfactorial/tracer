@@ -26,10 +26,6 @@
 //////////////////////////////////////////////////////////////////
 
 namespace tracer {
-    inline Interval::Interval(float startVal, float endVal)
-            : start(startVal), end(endVal) {
-    }
-
     //! \brief  Retrieves the length of the interval.
     //! \return The length of the interval.
     inline float Interval::getLength() const {

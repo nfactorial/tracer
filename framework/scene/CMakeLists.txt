@@ -17,6 +17,7 @@ set(INCLUDE_FILES
         include/scene.h)
 
 add_library(tracer_scene ${SOURCE_FILES} ${HEADER_FILES})
+target_link_libraries(tracer_scene tracer_math)
 
 if(TRACER_BUILD_TESTS)
     add_subdirectory(test)

@@ -8,4 +8,4 @@ add_executable(tracer_scene_test
         test_node.cpp)
 
 target_link_libraries(tracer_scene_test gtest gtest_main)
-target_link_libraries(tracer_scene_test tracer_math tracer_scene)
+target_link_libraries(tracer_scene_test tracer_scene)
