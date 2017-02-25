@@ -21,10 +21,6 @@
 //////////////////////////////////////////////////////////////////
 
 namespace tracer {
-    Interval::Interval(float startVal, float endVal)
-    : start(startVal), end(endVal) {
-    }
-
     const Interval  Interval::Infinite(-std::numeric_limits<float>::infinity(),
                                             std::numeric_limits<float>::infinity());
     const Interval  Interval::Front(0.0f, std::numeric_limits<float>::infinity());
